@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Bloques Pendientes</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .firma-list {
+            font-size: 0.85rem;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Bloques Pendientes de Validación</h1>
+        <span class="badge bg-primary fs-6">Usuario: {{ user.username }}</span>
+    </div>
+
+    <!-- Tabla principal -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            Bloques pendientes
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Lote</th>
+                            <th>Responsable</th>
+                            <th>Etapa</th>
+                            <th>Firmas</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                    {% if pendientes|length == 0 %}
+                        <tr>
+                            <td colspan="6" class="text-center py-4">
+                                <div class="alert alert-info mb-0">
+                                    No hay bloques pendientes
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
+
+                    {% for p in pendientes %}
+                    <tr>
+                        <td><strong>{{ p.id }}</strong></td>
+
+                        <td>{{ p.block.transactions[0].payload.batch }}</td>
+                        <td>{{ p.block.transactions[0].payload.responsable }}</td>
+                        <td>
+                            <span class="badge bg-info text-dark">
+                                {{ p.block.stage_name }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="badge bg-secondary">
+                                {{ p.approvals|length }} / 4
+                            </span>
+                            <br>
+
+                            {% if p.approvals|length > 0 %}
+                                <span class="firma-list">
+                                    Firmado por: {{ p.approvals | join(', ') }}
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if user.username in p.approvals %}
+                                <span class="badge bg-success">Ya firmado</span>
+                            {% else %}
+                                <form method="post" action="/firmar">
+                                    <input type="hidden" name="pending_id" value="{{ p.id }}">
+                                    <button class="btn btn-success btn-sm" type="submit">
+                                        ✔ Firmar
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón inferior -->
+    <div class="text-end mt-3">
+        <a href="/chain" class="btn btn-outline-primary">
+            Ver Blockchain
+        </a>
+    </div>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

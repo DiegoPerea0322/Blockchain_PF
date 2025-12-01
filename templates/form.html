@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Lote</title>
+    <style>
+        body { 
+            font-family: Arial; 
+            margin: 40px; 
+            background: #f7f7f7;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            width: 50%;
+            margin: 0 auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            margin-bottom: 18px;
+            border-radius: 6px;
+            border: 1px solid #aaa;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #006be6;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Registrar Nuevo Proceso del Lote</h1>
+
+<form method="post" action="/form">
+
+    <label for="batch">Número de lote</label>
+    <input type="text" id="batch" name="batch" required>
+
+    <label for="responsable">Responsable</label>
+    <input type="text" id="responsable" name="responsable" required>
+
+    <label for="stage_name">Etapa del proceso</label>
+    <select id="stage_name" name="stage_name" required>
+        <option value="">Seleccione una etapa</option>
+        <option value="fabricacion">Fabricación</option>
+        <option value="ensamblaje">Ensamblaje</option>
+        <option value="inspeccion">Inspección</option>
+        <option value="empaquetado">Empaquetado</option>
+        <option value="transporte">Transporte</option>
+    </select>
+
+    <button type="submit">Registrar</button>
+
+</form>
+
+</body>
+</html>

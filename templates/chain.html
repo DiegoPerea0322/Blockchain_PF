@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Blockchain</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td {
+            border: 1px solid #444;
+            padding: 8px;
+            text-align: left;
+        }
+        th { background: #ddd; }
+        h1 { margin-bottom: 10px; }
+        .back-btn {
+            padding: 8px 14px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+        .back-btn:hover { background: #0056b3; }
+
+        /* 👇 Scroll horizontal SOLO para los hashes */
+        .scroll-cell {
+            max-width: 220px;
+            overflow-x: auto;
+            white-space: nowrap;
+            font-family: monospace;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Blockchain</h1>
+
+<a class="back-btn" href="/pendientes">⬅ Regresar</a>
+
+<table>
+    <tr>
+        <th>Hash</th>
+        <th>Hash Anterior</th>
+        <th>Stage</th>
+        <th>Batch</th>
+        <th>Responsable</th>
+    </tr>
+
+    {% for b in chain %}
+        {% if b.index != 0 %}
+        <tr>
+            <td><div class="scroll-cell">{{ b.hash }}</div></td>
+            <td><div class="scroll-cell">{{ b.previous_hash }}</div></td>
+
+            <td>{{ b.stage_name }}</td>
+            <td>{{ b.transactions[0].payload.batch }}</td>
+            <td>{{ b.transactions[0].payload.responsable }}</td>
+        </tr>
+        {% endif %}
+    {% endfor %}
+</table>
+
+</body>
+</html>

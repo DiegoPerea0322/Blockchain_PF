@@ -1,0 +1,2 @@
+[console_scripts]
+directory_tree = directory_tree.__main__:directoryTreeCli

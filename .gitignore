@@ -1,0 +1,42 @@
+# Created by venv; see https://docs.python.org/3/library/venv.html
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# ---- Virtual environments ----
+venv/
+env/
+.venv/
+
+# ---- FastAPI / Uvicorn ----
+*.log
+
+# ---- IDEs ----
+.vscode/
+.idea/
+
+# ---- OS files ----
+.DS_Store
+Thumbs.db
+
+# ---- Bytecode cache ----
+*.pytest_cache/
+.pytest_cache/
+*.mypy_cache/
+.mypy_cache/
+
+# ---- Jupyter / other tools ----
+.ipynb_checkpoints/
+
+# ---- Environment / secrets ----
+.env
+.env.*
+*.sqlite3
