@@ -14,7 +14,7 @@ Si la activación fue exitosa deberías ver algo así al inicio de tu línea:
 
 (venv) usuario@pc:~/Blockchain$
 
-📦 2. Instalación de dependencias con requirements.txt
+2. Instalación de dependencias con requirements.txt
 
 Una vez activado el entorno virtual, instala todas las dependencias necesarias ejecutando:
 
@@ -22,7 +22,7 @@ pip install -r requirements.txt
 
 Esto garantiza que tu entorno tendrá exactamente las mismas librerías requeridas para ejecutar el proyecto.
 
-▶️ 3. Activación del servidor FastAPI
+3. Activación del servidor FastAPI
 
 Para iniciar el backend de FastAPI ejecuta:
 
