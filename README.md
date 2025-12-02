@@ -33,7 +33,8 @@ El servidor se iniciará en:
 http://127.0.0.1:8000
 
 4. Las credenciales para probar funcionalidad son:
-   "alice": User(username="alice", password="alicepw", role="usuario"),
+   
+    "alice": User(username="alice", password="alicepw", role="usuario"),
     "maria": User(username="maria", password="mariapw", role="usuario"),
     "validator_1": User(username="validator_1", password="valpw", role="autoridad"),
     "validator_2": User(username="validator_2", password="valpw", role="autoridad"),
@@ -41,6 +42,6 @@ http://127.0.0.1:8000
     "validator_4": User(username="validator_4", password="valpw", role="autoridad"),
     "validator_5": User(username="validator_5", password="valpw", role="autoridad")
 
-5. Para probar se debe: iniciar sesion con alice o maria, llenar el formulario, el cual envia solicitud de verificacion.
-6. Iniciar sesión con cualquier validador y ver que el bloque aparece, para firmar se da click en el boton validar.
-7. Una vez firmen 4 autoridades o validadores, el bloque se añade a la blockchain y puede ser visto por la autoridad en el boton de Ver Blockchain
+6. Para probar se debe: iniciar sesion con alice o maria, llenar el formulario, el cual envia solicitud de verificacion.
+7. Iniciar sesión con cualquier validador y ver que el bloque aparece, para firmar se da click en el boton validar.
+8. Una vez firmen 4 autoridades o validadores, el bloque se añade a la blockchain y puede ser visto por la autoridad en el boton de Ver Blockchain
