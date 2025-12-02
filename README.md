@@ -34,12 +34,18 @@ http://127.0.0.1:8000
 
 4. Las credenciales para probar funcionalidad son:
    
-    "alice": User(username="alice", password="alicepw", role="usuario"),
-    "maria": User(username="maria", password="mariapw", role="usuario"),
-    "validator_1": User(username="validator_1", password="valpw", role="autoridad"),
-    "validator_2": User(username="validator_2", password="valpw", role="autoridad"),
-    "validator_3": User(username="validator_3", password="valpw", role="autoridad"),
-    "validator_4": User(username="validator_4", password="valpw", role="autoridad"),
+    "alice": User(username="alice", password="alicepw", role="usuario")
+   
+    "maria": User(username="maria", password="mariapw", role="usuario")
+   
+    "validator_1": User(username="validator_1", password="valpw", role="autoridad")
+   
+    "validator_2": User(username="validator_2", password="valpw", role="autoridad")
+   
+    "validator_3": User(username="validator_3", password="valpw", role="autoridad")
+   
+    "validator_4": User(username="validator_4", password="valpw", role="autoridad")
+   
     "validator_5": User(username="validator_5", password="valpw", role="autoridad")
 
 6. Para probar se debe: iniciar sesion con alice o maria, llenar el formulario, el cual envia solicitud de verificacion.
