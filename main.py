@@ -3,6 +3,9 @@ from fastapi import FastAPI, Request, Form, Depends
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi import HTTPException
+import json  # <--- NUEVO
+from fastapi import Response  # <--- CAMBIO: Usaremos Response en vez de JSONResponse
+from block_ops import chain_as_dict
 
 from auth.auth import authenticate
 from auth.deps import role_usuario, role_autoridad
@@ -14,6 +17,7 @@ from block_ops import (
     chain_as_dict
 )
 from state import pending_blocks, chain
+from fastapi.encoders import jsonable_encoder
 
 app = FastAPI()
 templates = Jinja2Templates(directory="./templates")
@@ -59,6 +63,7 @@ async def form_page(request: Request, user=Depends(role_usuario)):
 @app.post("/form")
 async def submit_form(
     batch: str = Form(...),
+    descripcion: str = Form(...),
     responsable: str = Form(...),
     stage_name: str = Form(...),
     user=Depends(role_usuario)
@@ -68,33 +73,46 @@ async def submit_form(
         actor_type="usuario",
         payload={
             "batch": batch,
-            "responsable": responsable,
-            "stage": stage_name
-        }
+            "descripcion": descripcion,
+            "stage": stage_name,
+            "responsable": responsable,  # 👈 AGREGAR ESTO
+        },
+        # si tienes más campos, déjalos igual
     )
 
     pending = propose_block_from_tx(tx)
-
     print(">> Nuevo bloque propuesto:", pending)
 
     return RedirectResponse("/form", status_code=303)
 
 
+
 # ---------- AUTORIDADES: VALIDACIÓN ----------
+from block_ops import (
+    propose_block_from_tx,
+    list_pending_blocks,
+    sign_pending_block,
+    chain_as_dict
+)
+# ...
+
 @app.get("/pendientes", response_class=HTMLResponse)
 async def revisar_pendientes(request: Request, user=Depends(role_autoridad)):
+    pendientes_limpios = list_pending_blocks()
     return templates.TemplateResponse(
         "pendientes.html",
         {
             "request": request,
             "user": user,
-            "pendientes": pending_blocks
+            "pendientes": pendientes_limpios
         }
     )
 
 
+
 @app.post("/firmar")
 async def firmar_bloque(
+    
     pending_id: int = Form(...),
     user=Depends(role_autoridad)
 ):
@@ -120,10 +138,60 @@ async def firmar_bloque(
 
 #-------- Mostrar Blockchain ----------#
 
+# ...
+
+from block_ops import (
+    propose_block_from_tx,
+    list_pending_blocks,
+    sign_pending_block,
+    chain_as_dict,
+)
+# ...
+
 @app.get("/chain", response_class=HTMLResponse)
 def view_chain(request: Request):
-    chain_json = [b.header_dict() for b in chain.chain]
-    return templates.TemplateResponse("chain.html", {
-        "request": request,
-        "chain": chain_json
-    })
+    chain_json = chain_as_dict()  # incluye hash, certificate, etc.
+    return templates.TemplateResponse(
+        "chain.html",
+        {
+            "request": request,
+            "chain": chain_json,
+        }
+    )
+
+
+from block_ops import mark_pending_block_failed
+# ...
+
+@app.post("/rechazar")
+async def rechazar_bloque(
+    pending_id: int = Form(...),
+    user=Depends(role_autoridad)
+):
+    try:
+        result = mark_pending_block_failed(pending_id)
+        print("Resultado rechazo:", result)
+    except HTTPException as e:
+        print("Error al rechazar:", e.detail)
+        return RedirectResponse("/pendientes?msg=error", status_code=303)
+    except Exception as e:
+        print("Error inesperado al rechazar:", e)
+        return RedirectResponse("/pendientes?msg=error", status_code=303)
+
+    return RedirectResponse("/pendientes", status_code=303)
+
+
+
+@app.get("/download_chain")
+def download_chain_file():
+    """Genera un archivo JSON descargable y BONITO (pretty-printed)"""
+    data = chain_as_dict()
+    
+    # Aquí está el truco: indent=4 hace que se vea estructurado
+    pretty_json_str = json.dumps(data, indent=4, default=str)
+    
+    return Response(
+        content=pretty_json_str,
+        media_type="application/json",
+        headers={"Content-Disposition": "attachment; filename=blockchain_data.json"}
+    )
