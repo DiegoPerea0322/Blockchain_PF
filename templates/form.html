@@ -74,6 +74,15 @@
 
 <h1>Registrar Nuevo Proceso del Lote</h1>
 
+{% if request.query_params.get('msg') == 'success' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert" style="width: 50%; margin: 20px auto;">
+    <strong>¡Registro enviado correctamente!</strong> 
+    <br>
+    La transacción ha sido creada y está actualmente <strong>esperando la validación</strong> de los nodos validadores.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+
 <form method="post" action="/form">
 
     <label for="batch">Número de lote</label>
