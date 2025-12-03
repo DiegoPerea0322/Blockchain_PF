@@ -83,7 +83,7 @@ async def submit_form(
     pending = propose_block_from_tx(tx)
     print(">> Nuevo bloque propuesto:", pending)
 
-    return RedirectResponse("/form", status_code=303)
+    return RedirectResponse("/form?msg=success", status_code=303)
 
 
 
